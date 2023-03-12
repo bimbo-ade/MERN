@@ -12,27 +12,30 @@ const signup = (req, res) => {
 
   //making sure all feilds have a value
   if (!name || !email || !password) {
+    res.status(400);
     console.log("fill all feilds");
   }
 
   //mongoose method schema stuvv
-  const userExists = User.findOne({ email }).then((user) => {
-    if (user) {
-      return res.json({ error });
-    } else {
-      const user = new User({
-        name: name,
-        email: email,
-        password: password,
-      });
-      //hashing password
-      bcrypt.genSalt(10, function (err, salt) {
-        bcrypt.hash(password);
-      });
-    }
+  const userExists = User.findOne({ email });
+
+  if (userExists) {
+    res.status(400);
+    console.log("email in use");
+  }
+
+  //hashing password
+  const salt = bcrypt.genSalt(10);
+  const hashPassword = bcrypt.hash(password, salt);
+
+  // creating user
+
+  const user = new User({
+    name,
+    email,
+    password,
   });
 };
-
 const login = (req, res) => {
   res.status(200).json({ mssg: "post moves" });
 };
