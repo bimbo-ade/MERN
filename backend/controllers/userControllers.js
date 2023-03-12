@@ -28,14 +28,23 @@ const signup = (req, res) => {
   const salt = bcrypt.genSalt(10);
   const hashPassword = bcrypt.hash(password, salt);
 
-  // creating user
-
+  // creating new user
   const user = new User({
     name,
     email,
-    password,
+    password: hashPassword,
   });
+
+  if (user) {
+    res.status(201).json({
+      _id: user.id,
+      name: user.name,
+      email: user.email,
+    });
+  }
 };
+
+//login
 const login = (req, res) => {
   res.status(200).json({ mssg: "post moves" });
 };
