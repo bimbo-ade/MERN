@@ -8,14 +8,26 @@ const bcrypt = require("bcrypt");
 const { createJWT } = require("../utils/auth");
 
 const signup = (req, res) => {
-  let { email, password, name } = req.body;
+  const { email, password, name } = req.body;
+
+  //making sure all feilds have a value
+  if (!name || !email || !password) {
+    console.log("fill all feilds");
+  }
+
   //mongoose method schema stuvv
-  User.findOne({ email: email }).then((user) => {
+  const userExists = User.findOne({ email }).then((user) => {
     if (user) {
       return res.json({ error });
     } else {
       const user = new User({
-        mae: name,
+        name: name,
+        email: email,
+        password: password,
+      });
+      //hashing password
+      bcrypt.genSalt(10, function (err, salt) {
+        bcrypt.hash(password);
       });
     }
   });
