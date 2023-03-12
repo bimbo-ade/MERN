@@ -1,16 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const {
-  getMoves,
-  postMoves,
-  deleteMoves,
-  updateMoves,
-} = require("../controllers/movesControllers");
+const { signup, login } = require("../controllers/userControllers");
 
-router.get("/", getMoves);
-router.post("/", postMoves);
-router.delete("/:id", deleteMoves);
-router.put("/:id", updateMoves);
+router.get("/signup", signup);
+router.post("/login", login);
 
 // A cleaner way to write the above code
 // router.route("/").get("/", getMoves).post("/", postMoves);
