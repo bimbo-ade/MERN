@@ -2,7 +2,7 @@ const express = require("express");
 const router = express.Router();
 const { signup, login } = require("../controllers/userControllers");
 
-router.get("/signup", signup);
+router.post("/signup", signup);
 router.post("/login", login);
 
 // A cleaner way to write the above code
