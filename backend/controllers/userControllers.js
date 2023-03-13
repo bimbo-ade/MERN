@@ -74,6 +74,21 @@ const signup = (req, res) => {
 //login
 const login = (req, res) => {
   let { email, password } = req.body;
+
+  let errors = [];
+  if (!email) {
+    errors.push({ email: "required" });
+  }
+  if (!emailRegexp.test(email)) {
+    errors.push({ email: "invalid email" });
+  }
+  if (!password) {
+    errors.push({ passowrd: "required" });
+  }
+  if (errors.length > 0) {
+    return res.status(422).json({ errors: errors });
+  }
+
   User.findOne({ email: email })
     .then((user) => {
       if (!user) {
