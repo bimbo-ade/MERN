@@ -41,21 +41,20 @@ const signup = async (req, res) => {
       const hashedPassword = await bcrypt.hash(password, salt);
 
       //creating new user if no user exists
-      const user = new User({
+      const user = await User.create({
         name,
         email,
         password: hashedPassword,
       });
       if (user) {
         res.status(201).json({
-          success: true,
-          result: {
-            _id: user.id,
-            name: user.name,
-            email: user.email,
-            token: generateToken(user._id),
-          },
+          _id: user.id,
+          name: user.name,
+          email: user.email,
+          token: generateToken(user._id),
         });
+      } else {
+        res.status(400).json({ msg: "Invalid user data" });
       }
     }
   } catch {
@@ -85,7 +84,7 @@ const login = async (req, res) => {
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(400).json({ message: "no user found" });
+      res.status(401).json({ msg: `User with email ${email} does not exist.` });
     }
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
