@@ -53,6 +53,7 @@ const signup = async (req, res) => {
             _id: user.id,
             name: user.name,
             email: user.email,
+            token: generateToken(user._id),
           },
         });
       }
@@ -64,34 +65,44 @@ const signup = async (req, res) => {
 
 //login
 const login = async (req, res) => {
-  let { email, password } = req.body;
+  try {
+    let { email, password } = req.body;
 
-  let errors = [];
-  if (!email) {
-    errors.push({ email: "required" });
-  }
-  if (!emailRegexp.test(email)) {
-    errors.push({ email: "invalid email" });
-  }
-  if (!password) {
-    errors.push({ passowrd: "required" });
-  }
-  if (errors.length > 0) {
-    return res.status(422).json({ errors: errors });
-  }
+    let errors = [];
+    if (!email) {
+      errors.push({ email: "required" });
+    }
+    if (!emailRegexp.test(email)) {
+      errors.push({ email: "invalid email" });
+    }
+    if (!password) {
+      errors.push({ passowrd: "required" });
+    }
+    if (errors.length > 0) {
+      return res.status(422).json({ errors: errors });
+    }
 
-  const user = User.findOne({ email });
+    const user = await User.findOne({ email });
 
-  if (!user) {
-    res.status(400);
-  }
-  if (user && (await bcrypt.compare(password, user.password))) {
-    res.json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-    });
+    if (!user) {
+      res.status(400).json({ message: "no user found" });
+    }
+    if (user && (await bcrypt.compare(password, user.password))) {
+      res.json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
+      });
+    }
+  } catch (error) {
+    res.status(500).send({ message: "lol for the catch" });
   }
 };
 
+const generateToken = (id) => {
+  return jwt.sign({ id }, process.env.TOKEN_SECRET, {
+    expiresIn: "30d",
+  });
+};
 module.exports = { signup, login };
