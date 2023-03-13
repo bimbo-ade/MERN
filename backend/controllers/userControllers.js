@@ -31,28 +31,29 @@ const signup = async (req, res) => {
     if (errors.length > 0) {
       return res.status(422).json({ errors: errors });
     }
-    const userExists = User.findOne({ email });
+    const userExists = await User.findOne({ email });
 
     if (userExists) {
-      return res.status(404).json({ message: "email already exists" });
+      res.json({ message: "email already  exists lol" });
     } else {
       //hashing password
       const salt = await bcrypt.genSalt(10);
       const hashedPassword = await bcrypt.hash(password, salt);
 
       //creating new user if no user exists
-
-      const user = await User.create({
+      const user = new User({
         name,
         email,
         password: hashedPassword,
       });
-
       if (user) {
         res.status(201).json({
-          _id: user.id,
-          name: user.name,
-          email: user.email,
+          success: true,
+          result: {
+            _id: user.id,
+            name: user.name,
+            email: user.email,
+          },
         });
       }
     }
