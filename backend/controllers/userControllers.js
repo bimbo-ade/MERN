@@ -11,50 +11,53 @@ const emailRegexp =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
 
 const signup = async (req, res) => {
-  let { name, email, password } = req.body;
+  try {
+    let { name, email, password } = req.body;
 
-  // validating feilds
-  let errors = [];
-  if (!name) {
-    errors.push({ name: "required" });
-  }
-  if (!email) {
-    errors.push({ email: "required" });
-  }
-  if (!emailRegexp.test(email)) {
-    errors.push({ email: "invalid" });
-  }
-  if (!password) {
-    errors.push({ password: "required" });
-  }
-  if (errors.length > 0) {
-    return res.status(422).json({ errors: errors });
-  }
-  const userExists = User.findOne({ email });
+    // validating feilds
+    let errors = [];
+    if (!name) {
+      errors.push({ name: "required" });
+    }
+    if (!email) {
+      errors.push({ email: "required" });
+    }
+    if (!emailRegexp.test(email)) {
+      errors.push({ email: "invalid" });
+    }
+    if (!password) {
+      errors.push({ password: "required" });
+    }
+    if (errors.length > 0) {
+      return res.status(422).json({ errors: errors });
+    }
+    const userExists = User.findOne({ email });
 
-  if (userExists) {
-    res.status(400);
-  }
-  //hashing password
-  const salt = await bcrypt.genSalt(10);
-  const hashedPassword = await bcrypt.hash(password, salt);
+    if (userExists) {
+      return res.status(404).json({ message: "email already exists" });
+    } else {
+      //hashing password
+      const salt = await bcrypt.genSalt(10);
+      const hashedPassword = await bcrypt.hash(password, salt);
 
-  //creating new user if no user exists
+      //creating new user if no user exists
 
-  const user = await User.create({
-    name,
-    email,
-    password: hashedPassword,
-  });
+      const user = await User.create({
+        name,
+        email,
+        password: hashedPassword,
+      });
 
-  if (user) {
-    res.status(201).json({
-      _id: user.id,
-      name: user.name,
-      email: user.email,
-    });
-  } else {
-    res.status(400);
+      if (user) {
+        res.status(201).json({
+          _id: user.id,
+          name: user.name,
+          email: user.email,
+        });
+      }
+    }
+  } catch {
+    res.status(500).send({ message: "lol for the catch" });
   }
 };
 
