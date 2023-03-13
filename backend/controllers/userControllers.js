@@ -53,8 +53,6 @@ const signup = async (req, res) => {
           email: user.email,
           token: generateToken(user._id),
         });
-      } else {
-        res.status(400).json({ msg: "Invalid user data" });
       }
     }
   } catch {
