@@ -27,6 +27,9 @@ const signup = (req, res) => {
   if (!password) {
     errors.push({ password: "required" });
   }
+  if (errors.length > 0) {
+    return res.status(422).json({ errors: errors });
+  }
 
   User.findOne({ email: email })
     .then((user) => {
