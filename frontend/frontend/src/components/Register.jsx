@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 
 const Signup = () => {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
@@ -13,6 +14,11 @@ const Signup = () => {
       <div className="cont">
         <h2>Sign Up</h2>
 
+        <input
+          type="text"
+          placeholder="name"
+          onChange={(e) => setName(e.target.value)}
+        />
         <input
           type="text"
           placeholder="email"
