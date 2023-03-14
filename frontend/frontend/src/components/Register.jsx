@@ -1,5 +1,4 @@
-import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 
 const Signup = () => {
@@ -7,6 +6,35 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(name, email, password);
+    fetch("/api/user/signup", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        name,
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "userRegister");
+        if (data.status === "ok") {
+          alert("Registration Successful");
+        } else {
+          alert("Something went wrong");
+        }
+      });
+  };
+  useEffect(() => {}, []);
   return (
     <Div>
       <img src="/" alt="login" width={900} />
@@ -14,24 +42,25 @@ const Signup = () => {
 
       <div className="cont">
         <h2>Sign Up</h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="name"
+            onChange={(e) => setName(e.target.value)}
+          />
+          <input
+            type="text"
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <input
-          type="text"
-          placeholder="name"
-          onChange={(e) => setName(e.target.value)}
-        />
-        <input
-          type="text"
-          placeholder="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button>Sign Up</button>
+          <input
+            type="password"
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button>Sign Up</button>
+        </form>
         <p>
           Already have an Account? <span> Login </span>
         </p>

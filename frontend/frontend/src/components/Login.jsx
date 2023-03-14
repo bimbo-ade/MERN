@@ -1,10 +1,37 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    console.log(email, password);
+    fetch("/api/user/login", {
+      method: "POST",
+      crossDomain: true,
+      headers: {
+        "Content-Type": "application/json",
+        Accept: "application/json",
+        "Access-Control-Allow-Origin": "*",
+      },
+      body: JSON.stringify({
+        email,
+        password,
+      }),
+    })
+      .then((res) => res.json())
+      .then((data) => {
+        console.log(data, "userRegister");
+        if (data.status === "ok") {
+          alert("Registration Successful");
+        } else {
+          alert("Something went wrong");
+        }
+      });
+  };
 
   return (
     <Div>
@@ -13,19 +40,20 @@ const Login = () => {
 
       <div className="cont">
         <h2>Login </h2>
+        <form onSubmit={handleSubmit}>
+          <input
+            type="text"
+            placeholder="email"
+            onChange={(e) => setEmail(e.target.value)}
+          />
 
-        <input
-          type="text"
-          placeholder="email"
-          onChange={(e) => setEmail(e.target.value)}
-        />
-
-        <input
-          type="password"
-          placeholder="password"
-          onChange={(e) => setPassword(e.target.value)}
-        />
-        <button>Login </button>
+          <input
+            type="password"
+            placeholder="password"
+            onChange={(e) => setPassword(e.target.value)}
+          />
+          <button>Login </button>
+        </form>
         <p>
           Already have an Account? <span> Signup </span>
         </p>
