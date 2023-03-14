@@ -5,7 +5,7 @@
 const jwt = require("jsonwebtoken");
 const User = require("../models/users");
 const bcrypt = require("bcrypt");
-const { createJWT } = require("../utils/auth");
+const validator = require("validator");
 
 const emailRegexp =
   /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*$/;
@@ -15,21 +15,14 @@ const signup = async (req, res) => {
     let { name, email, password } = req.body;
 
     // validating feilds
-    let errors = [];
-    if (!name) {
-      errors.push({ name: "required" });
+    if (!email || !password || !name) {
+      res.json({ msg: "All fields must be filled" });
     }
-    if (!email) {
-      errors.push({ email: "required" });
+    if (!validator.isEmail(email)) {
+      res.json({ msg: "Email not valid" });
     }
-    if (!emailRegexp.test(email)) {
-      errors.push({ email: "invalid" });
-    }
-    if (!password) {
-      errors.push({ password: "required" });
-    }
-    if (errors.length > 0) {
-      return res.status(422).json({ errors: errors });
+    if (!validator.isStrongPassword(password)) {
+      res.json({ msg: "Password not strong enough" });
     }
     const userExists = await User.findOne({ email });
 
@@ -65,18 +58,9 @@ const login = async (req, res) => {
   try {
     let { email, password } = req.body;
 
-    let errors = [];
-    if (!email) {
-      errors.push({ email: "required" });
-    }
-    if (!emailRegexp.test(email)) {
-      errors.push({ email: "invalid email" });
-    }
-    if (!password) {
-      errors.push({ passowrd: "required" });
-    }
-    if (errors.length > 0) {
-      return res.status(422).json({ errors: errors });
+    // validating feilds
+    if (!email || !password) {
+      res.json({ msg: "All fields must be filled" });
     }
 
     const user = await User.findOne({ email });
@@ -84,6 +68,7 @@ const login = async (req, res) => {
     if (!user) {
       res.status(401).json({ msg: `User with email ${email} does not exist.` });
     }
+
     if (user && (await bcrypt.compare(password, user.password))) {
       res.json({
         _id: user.id,
