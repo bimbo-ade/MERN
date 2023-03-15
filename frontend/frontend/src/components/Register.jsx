@@ -6,11 +6,16 @@ const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [err, setErr] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     try {
+      if (!name || !password || !email) {
+        return setErr("all fields mut be filled");
+      }
+
       const response = await axios.post(
         "/api/user/signup",
         JSON.stringify({ name, email, password }),
@@ -28,7 +33,7 @@ const Signup = () => {
       setEmail("");
       setPassword("");
     } catch (err) {
-      console.log(err.message);
+      setErr(err.message);
     }
   };
 
@@ -59,7 +64,9 @@ const Signup = () => {
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
+
           <button>Sign Up</button>
+          <p> {err}</p>
         </form>
         <p>
           Already have an Account? <span> Login </span>
