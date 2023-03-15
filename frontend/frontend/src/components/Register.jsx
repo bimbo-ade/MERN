@@ -1,37 +1,39 @@
 import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import axios from "axios";
 
 const Signup = () => {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
+  const baseURL = "/api/user/signup";
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(name, email, password);
-    fetch("/api/user/signup", {
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        name,
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        const datas = data;
-        console.log(data, "userRegistered");
-        localStorage.setItem("user", JSON.stringify(datas));
-      });
+    try {
+      const response = await axios.post(
+        "/api/user/signup",
+        JSON.stringify({ name, email, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        }
+      );
+      localStorage.setItem("user", JSON.stringify(response.data));
+      console.log(response?.data);
+
+      name("");
+      email("");
+      password("");
+    } catch (err) {
+      console.log(err.message);
+    }
   };
-  useEffect(() => {}, []);
+
   return (
     <Div>
       <img src="/" alt="login" width={900} />
