@@ -25,11 +25,6 @@ const Login = () => {
       .then((res) => res.json())
       .then((data) => {
         console.log(data, "userRegister");
-        if (data.status === "ok") {
-          alert("Registration Successful");
-        } else {
-          alert("Something went wrong");
-        }
       });
   };
 

@@ -26,12 +26,9 @@ const Signup = () => {
     })
       .then((res) => res.json())
       .then((data) => {
-        console.log(data, "userRegister");
-        if (data.status === "ok") {
-          alert("Registration Successful");
-        } else {
-          alert("Something went wrong");
-        }
+        const datas = data;
+        console.log(data, "userRegistered");
+        localStorage.setItem("user", JSON.stringify(datas));
       });
   };
   useEffect(() => {}, []);
