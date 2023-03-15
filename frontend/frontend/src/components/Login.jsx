@@ -1,8 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
+import AuthContext from "../context/AuthContext";
 
 const Login = () => {
+  const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
@@ -27,6 +29,8 @@ const Login = () => {
       );
       localStorage.setItem("log", JSON.stringify(response.data));
       console.log(response.data);
+      const token = response?.data?.token;
+      setAuth({ email, password, token });
 
       setEmail("");
       setPassword("");
