@@ -1,33 +1,39 @@
 import React, { useState } from "react";
-
+import axios from "axios";
 import styled from "styled-components";
+
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [err, setErr] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    console.log(email, password);
-    fetch("/api/user/login", {
-      method: "POST",
-      crossDomain: true,
-      headers: {
-        "Content-Type": "application/json",
-        Accept: "application/json",
-        "Access-Control-Allow-Origin": "*",
-      },
-      body: JSON.stringify({
-        email,
-        password,
-      }),
-    })
-      .then((res) => res.json())
-      .then((data) => {
-        console.log(data, "userRegister");
-      });
-  };
+    try {
+      if (!password || !email) {
+        return setErr("all fields must be filled");
+      }
 
+      const response = await axios.post(
+        "/api/user/login",
+        JSON.stringify({ email, password }),
+        {
+          headers: { "Content-Type": "application/json" },
+          withCredentials: true,
+          Accept: "application/json",
+          "Access-Control-Allow-Origin": "*",
+        }
+      );
+      localStorage.setItem("log", JSON.stringify(response.data));
+      console.log(response.data);
+
+      setEmail("");
+      setPassword("");
+    } catch (err) {
+      setErr(err.message);
+    }
+  };
   return (
     <Div>
       <img src="/" alt="login" width={900} />
@@ -38,16 +44,17 @@ const Login = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
+            value={email}
             placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
           />
-
           <input
             type="password"
+            value={password}
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button>Login </button>
+          <button>Login </button> <p> {err}</p>
         </form>
         <p>
           Already have an Account? <span> Signup </span>
