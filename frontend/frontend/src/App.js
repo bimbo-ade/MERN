@@ -6,29 +6,26 @@ import Home from "./components/Home";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 function App() {
-  const [user, setUser] = useState(true);
-  const [login, setLogin] = useState(true);
+  const [user, setUser] = useState(false);
   return (
     <div className="App">
       <BrowserRouter>
         <Navbar />
 
         <Routes>
-          {user ? (
-            <>
-              {" "}
-              <Route
-                path="/"
-                element={login ? <Home /> : <Navigate to="/login" />}
-              />
-            </>
-          ) : (
-            <>
-              {" "}
-              <Route path="login" element={<Login />} />
-              <Route path="signup" element={<Signup />} />
-            </>
-          )}
+          <Route
+            path="/"
+            element={user ? <Home /> : <Navigate to="/login" />}
+          />
+
+          <Route
+            path="login"
+            element={!user ? <Login /> : <Navigate to="/" />}
+          />
+          <Route
+            path="signup"
+            element={!user ? <Signup /> : <Navigate to="/" />}
+          />
         </Routes>
       </BrowserRouter>
     </div>

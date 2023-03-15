@@ -12,7 +12,7 @@ const Navbar = () => {
         <div className="img-cont">HOME</div>
         <div className={"links"}>
           <ul>
-            {user ? (
+            {user && (
               <>
                 {" "}
                 <li>
@@ -20,7 +20,8 @@ const Navbar = () => {
                 </li>
                 <li> logout</li>
               </>
-            ) : (
+            )}
+            {!user && (
               <>
                 <li>
                   <Link to="/login">Login</Link>
