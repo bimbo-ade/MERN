@@ -54,7 +54,8 @@ const Login = () => {
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
-          <button>Login </button> <p> {err}</p>
+          <button>Login </button>
+          <p> {err}</p>
         </form>
         <p>
           Already have an Account? <span> Signup </span>
