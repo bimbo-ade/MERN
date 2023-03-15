@@ -7,8 +7,6 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const baseURL = "/api/user/signup";
-
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -26,9 +24,9 @@ const Signup = () => {
       localStorage.setItem("user", JSON.stringify(response.data));
       console.log(response?.data);
 
-      name("");
-      email("");
-      password("");
+      setName("");
+      setEmail("");
+      setPassword("");
     } catch (err) {
       console.log(err.message);
     }
@@ -44,17 +42,20 @@ const Signup = () => {
         <form onSubmit={handleSubmit}>
           <input
             type="text"
+            value={name}
             placeholder="name"
             onChange={(e) => setName(e.target.value)}
           />
           <input
             type="text"
+            value={email}
             placeholder="email"
             onChange={(e) => setEmail(e.target.value)}
           />
 
           <input
             type="password"
+            value={password}
             placeholder="password"
             onChange={(e) => setPassword(e.target.value)}
           />
