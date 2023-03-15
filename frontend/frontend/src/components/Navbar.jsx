@@ -9,14 +9,23 @@ const Navbar = () => {
         <div className="img-cont">HOME</div>
         <div className={"links"}>
           <ul>
-            <li>Home</li>
-            <li>Menu</li>
-
-            <li>Contact</li>
-            <li>Blog</li>
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/signup">signup</Link>
+            </li>
           </ul>
           <div className="cart-icon-btn">
-            <button> Login </button>
+            <button>
+              {" "}
+              <li>
+                <Link to="/">logout</Link>
+              </li>{" "}
+            </button>
           </div>
         </div>
       </Div>
