@@ -1,9 +1,8 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 const Navbar = () => {
-  const [user, setUser] = useState(false);
   return (
     <div>
       {/* if user is TRUE loged in, we should only see HOME and LOGOUT */}
@@ -12,25 +11,17 @@ const Navbar = () => {
         <div className="img-cont">HOME</div>
         <div className={"links"}>
           <ul>
-            {user && (
-              <>
-                {" "}
-                <li>
-                  <Link to="/">Home</Link>
-                </li>
-                <li> logout</li>
-              </>
-            )}
-            {!user && (
-              <>
-                <li>
-                  <Link to="/login">Login</Link>
-                </li>
-                <li>
-                  <Link to="/signup">signup</Link>
-                </li>
-              </>
-            )}
+            {" "}
+            <li>
+              <Link to="/">Home</Link>
+            </li>
+            <li> logout</li>
+            <li>
+              <Link to="/login">Login</Link>
+            </li>
+            <li>
+              <Link to="/signup">signup</Link>
+            </li>
           </ul>
         </div>
       </Div>
