@@ -57,16 +57,23 @@ const login = async (req, res) => {
 
     // validating feilds
     if (!email || !password) {
-      res.json({ msg: "All fields must be filled" });
+      res.json({ message: "All fields must be filled" });
     }
 
     const user = await User.findOne({ email });
 
     if (!user) {
-      res.status(401).json({ msg: `User with email ${email} does not exist.` });
+      res
+        .status(401)
+        .json({ message: `User with email ${email} does not exist.` });
     }
 
-    if (user && (await bcrypt.compare(password, user.password))) {
+    const match = await bcrypt.compare(password, user.password);
+    if (!match) {
+      res.json({ msg: "rubbish" });
+    }
+
+    if (match) {
       res.json({
         _id: user.id,
         name: user.name,
