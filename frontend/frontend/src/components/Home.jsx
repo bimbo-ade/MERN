@@ -9,9 +9,6 @@ const Home = () => {
 
   return (
     <div>
-      <h1>
-        <strong>see this when you log in</strong>{" "}
-      </h1>
       <h2> WELCOME BACK {auth.name}</h2>
     </div>
   );
