@@ -13,37 +13,36 @@ const signup = async (req, res) => {
 
     // validating feilds
     if (!email || !password || !name) {
-      res.json({ msg: "All fields must be filled" });
+      res.json({ message: "All fields must be filled" });
     }
     if (!validator.isEmail(email)) {
-      res.json({ msg: "Email not valid" });
+      res.json({ message: "Email not valid" });
     }
     if (!validator.isStrongPassword(password)) {
-      res.json({ msg: "Password not strong enough" });
+      res.json({ message: "Password not strong enough" });
     }
     const userExists = await User.findOne({ email });
 
     if (userExists) {
-      res.json({ message: "email already  exists lol" });
-    } else {
-      //hashing password
-      const salt = await bcrypt.genSalt(10);
-      const hashedPassword = await bcrypt.hash(password, salt);
+      return res.status(404).json({ message: "email already  exists lol" });
+    }
+    //hashing password
+    const salt = await bcrypt.genSalt(10);
+    const hashedPassword = await bcrypt.hash(password, salt);
 
-      //creating new user if no user exists
-      const user = await User.create({
-        name,
-        email,
-        password: hashedPassword,
+    //creating new user if no user exists
+    const user = await User.create({
+      name,
+      email,
+      password: hashedPassword,
+    });
+    if (user) {
+      res.status(201).json({
+        _id: user.id,
+        name: user.name,
+        email: user.email,
+        token: generateToken(user._id),
       });
-      if (user) {
-        res.status(201).json({
-          _id: user.id,
-          name: user.name,
-          email: user.email,
-          token: generateToken(user._id),
-        });
-      }
     }
   } catch {
     res.status(500).send({ message: "lol for the catch" });
@@ -70,7 +69,7 @@ const login = async (req, res) => {
 
     const match = await bcrypt.compare(password, user.password);
     if (!match) {
-      res.json({ msg: "rubbish" });
+      res.status(400).json({ message: "wrong password" });
     }
 
     if (match) {
