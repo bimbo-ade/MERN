@@ -1,27 +1,35 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
+import AuthContext from "../context/AuthContext";
 
 const Navbar = () => {
+  const { auth, logout } = useContext(AuthContext);
+
   return (
     <div>
-      {/* if user is TRUE loged in, we should only see HOME and LOGOUT */}
-      {/* if user is FALSE not in we should only see SIGNIN and LOGIN */}
       <Div>
         <div className="img-cont">HOME</div>
         <div className={"links"}>
           <ul>
-            {" "}
-            <li>
-              <Link to="/">Home</Link>
-            </li>
-            <li> logout</li>
-            <li>
-              <Link to="/login">Login</Link>
-            </li>
-            <li>
-              <Link to="/signup">signup</Link>
-            </li>
+            {auth.token ? (
+              <>
+                <li>
+                  <Link to="/">Home</Link>
+                </li>
+                <span> {auth.email}</span>
+                <li onClick={logout}> logout</li>{" "}
+              </>
+            ) : (
+              <>
+                <li>
+                  <Link to="/login">Login</Link>
+                </li>{" "}
+                <li>
+                  <Link to="/signup">signup</Link>
+                </li>{" "}
+              </>
+            )}
           </ul>
         </div>
       </Div>

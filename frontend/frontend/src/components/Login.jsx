@@ -2,12 +2,16 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import styled from "styled-components";
 import AuthContext from "../context/AuthContext";
+import { useNavigate } from "react-router-dom";
+import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { setAuth } = useContext(AuthContext);
+  const { auth, setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,6 +21,7 @@ const Login = () => {
         return setErr("all fields must be filled");
       }
 
+      setErr(null);
       const response = await axios.post(
         "/api/user/login",
         JSON.stringify({ email, password }),
@@ -27,17 +32,26 @@ const Login = () => {
           "Access-Control-Allow-Origin": "*",
         }
       );
-      localStorage.setItem("log", JSON.stringify(response.data));
+
+      localStorage.setItem("user", JSON.stringify(response.data));
+      navigate("/");
       console.log(response.data);
       const token = response?.data?.token;
-      setAuth({ email, password, token });
+      const id = response?.data?._id;
+      const name = response?.data?.name;
 
+      //directly sends the user detailes to the global contex
+      setAuth({ id, name, email, password, token });
       setEmail("");
       setPassword("");
     } catch (err) {
-      setErr(err.message);
+      setErr(err.response.data.message);
+      console.log(err);
     }
   };
+  if (auth.token) {
+    return <Navigate to="/" replace />;
+  }
   return (
     <Div>
       <img src="/" alt="login" width={900} />

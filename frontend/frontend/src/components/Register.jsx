@@ -26,7 +26,7 @@ const Signup = () => {
           "Access-Control-Allow-Origin": "*",
         }
       );
-      localStorage.setItem("user", JSON.stringify(response.data));
+      // localStorage.setItem("user", JSON.stringify(response.data));
       console.log(response.data);
 
       setName("");
