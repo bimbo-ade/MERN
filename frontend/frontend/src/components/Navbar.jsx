@@ -12,7 +12,7 @@ const Navbar = () => {
         <div className="img-cont">HOME</div>
         <div className={"links"}>
           <ul>
-            {auth.token ? (
+            {auth ? (
               <>
                 <li>
                   <Link to="/">Home</Link>

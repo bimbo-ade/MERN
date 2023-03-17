@@ -3,10 +3,9 @@ import axios from "axios";
 import styled from "styled-components";
 import AuthContext from "../context/AuthContext";
 import { useNavigate } from "react-router-dom";
-import { Navigate } from "react-router-dom";
 
 const Login = () => {
-  const { auth, setAuth } = useContext(AuthContext);
+  const { setAuth } = useContext(AuthContext);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
@@ -49,9 +48,7 @@ const Login = () => {
       console.log(err);
     }
   };
-  if (auth.token) {
-    return <Navigate to="/" replace />;
-  }
+
   return (
     <Div>
       <img src="/" alt="login" width={900} />
