@@ -1,5 +1,5 @@
 const jwt = require("jsonwebtoken");
-const User = require("../models/users");
+const Food = require("../models/foodSchema");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 

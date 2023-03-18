@@ -21,4 +21,4 @@ const foodSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Food", userSchema);
+module.exports = mongoose.model("Food", foodSchema);
