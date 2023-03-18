@@ -32,6 +32,14 @@ const FoodIngredients = () => {
           {error && <div className="error">{error}</div>}
         </form>
       </div>
+
+      <div className="workout-details">
+        <h4>Food Name:{title}</h4>
+        <p>
+          <strong>In kilo (kg): </strong>
+          {load}
+        </p>
+      </div>
     </Div>
   );
 };
@@ -77,7 +85,6 @@ const Div = styled.div`
     color: white;
   }
   p {
-    color: white;
     padding-top: 0.3rem;
     font-size: 0.8rem;
   }
