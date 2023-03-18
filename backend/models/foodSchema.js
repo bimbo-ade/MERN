@@ -3,17 +3,17 @@
 const mongoose = require("mongoose");
 const Schema = mongoose.Schema;
 
-const userSchema = new Schema(
+const foodSchema = new Schema(
   {
-    name: {
+    title: {
       type: String,
       required: true,
     },
-    email: {
+    desc: {
       type: String,
       required: true,
     },
-    password: {
+    price: {
       type: String,
       required: true,
     },
@@ -21,4 +21,4 @@ const userSchema = new Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("User", userSchema);
+module.exports = mongoose.model("Food", userSchema);
