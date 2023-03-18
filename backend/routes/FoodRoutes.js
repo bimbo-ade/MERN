@@ -1,6 +1,11 @@
 const express = require("express");
 const router = express.Router();
-const { signup, login } = require("../controllers/userControllers");
+const {
+  getFood,
+  postFood,
+  deleteFood,
+  updateFood,
+} = require("../controllers/foodControllers");
 
 //A cleaner way to write the above code
 router.route("/").get("/", getFood).post("/", postFood);
