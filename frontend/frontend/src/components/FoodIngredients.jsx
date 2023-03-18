@@ -3,7 +3,8 @@ import styled from "styled-components";
 
 const FoodIngredients = () => {
   const [title, setTitle] = useState("");
-  const [load, setLoad] = useState("");
+  const [desc, setDesc] = useState("");
+  const [price, setPrice] = useState("");
   const [error, setError] = useState(null);
   const [emptyFields, setEmptyFields] = useState([]);
 
@@ -21,11 +22,17 @@ const FoodIngredients = () => {
             value={title}
           />
 
-          <label>kg:</label>
+          <label>Description</label>
           <input
             type="number"
-            onChange={(e) => setLoad(e.target.value)}
-            value={load}
+            onChange={(e) => setDesc(e.target.value)}
+            value={desc}
+          />
+          <label>Price</label>
+          <input
+            type="number"
+            onChange={(e) => setPrice(e.target.value)}
+            value={price}
           />
 
           <button>Add Food</button>
@@ -35,10 +42,8 @@ const FoodIngredients = () => {
 
       <div className="workout-details">
         <h4>Food Name:{title}</h4>
-        <p>
-          <strong>In kilo (kg): </strong>
-          {load}
-        </p>
+        <p>Desc {desc}</p>
+        <p>Price {price}</p>
       </div>
     </Div>
   );
