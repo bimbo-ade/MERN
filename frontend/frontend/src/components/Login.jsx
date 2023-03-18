@@ -15,12 +15,12 @@ const Login = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      if (!password || !email) {
-        return setErr("all fields must be filled");
-      }
+    if (!password || !email) {
+      return setErr("all fields must be filled");
+    }
+    setErr(null);
 
-      setErr(null);
+    try {
       const response = await axios.post(
         "/api/user/login",
         JSON.stringify({ email, password }),
@@ -33,7 +33,9 @@ const Login = () => {
       );
 
       localStorage.setItem("user", JSON.stringify(response.data));
+
       navigate("/");
+
       console.log(response.data);
       const token = response?.data?.token;
       const id = response?.data?._id;

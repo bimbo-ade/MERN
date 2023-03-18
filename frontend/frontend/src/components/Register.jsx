@@ -8,15 +8,18 @@ const Signup = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [err, setErr] = useState("");
+
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    try {
-      if (!name || !password || !email) {
-        return setErr("all fields mut be filled");
-      }
+    if (!name || !password || !email) {
+      return setErr("all fields mut be filled");
+    }
+    setErr(null);
 
+    try {
       const response = await axios.post(
         "/api/user/signup",
         JSON.stringify({ name, email, password }),
@@ -27,9 +30,11 @@ const Signup = () => {
           "Access-Control-Allow-Origin": "*",
         }
       );
-      // localStorage.setItem("user", JSON.stringify(response.data));
+
       console.log(response.data);
+
       navigate("/login");
+
       setName("");
       setEmail("");
       setPassword("");

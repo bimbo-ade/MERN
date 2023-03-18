@@ -18,7 +18,7 @@ const Navbar = () => {
                   <Link to="/">Home</Link>
                 </li>
                 <span> {auth.email}</span>
-                <li onClick={logout}> logout</li>{" "}
+                <button onClick={logout}> logout</button>{" "}
               </>
             ) : (
               <>
@@ -76,13 +76,14 @@ export const Div = styled.div`
     }
   }
   button {
-    padding: 0.5rem 1.5rem;
-    border-radius: 2rem;
+    padding: 0.3rem 1.3rem;
+    border-radius: 0.3rem;
     border: 0;
     background-color: #ff2156;
     color: white;
     font-weight: 500;
     font-size: 0.9rem;
+    margin-left: 0.4rem;
   }
   .cart-icon-btn {
     position: relative;
