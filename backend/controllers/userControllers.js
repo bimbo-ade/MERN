@@ -3,7 +3,7 @@
 //and then export it and call it in the routes folder
 
 const jwt = require("jsonwebtoken");
-const User = require("../models/users");
+const User = require("../models/userSchema");
 const bcrypt = require("bcrypt");
 const validator = require("validator");
 
